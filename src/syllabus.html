@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="syllabusstyle.css" />
+    </head>
+    <body>
+        <a id="back" href="home.html">Back</a>
+        <a id = "add">+</a>
+        <h1 id="headertext">Syllabus</h1>
+        <table id="syllabustable">
+            <tr>
+                <th class="taskcolumn visible">Task</th>
+                <th class="datecolumn visible">Due Date</th>
+                <th class="typecolumn visible">Type</th>
+                <th class="statuscolumn visible">Status</th>
+                <th class="deletecolumn"></th>
+            </tr>
+        </table>
+        <div class="modal" id="taskmodal">
+            <div class="modalcontent" id="taskmodalcontent">
+                <span class="close" id="closemodal">&times;</span>
+                <label>Task Description  </label>
+                <input class="textinput" id="taskname">
+                <br><br>
+                <label>Due Date  </label>
+                <input class="dateinput" id="duedate" type="date">
+                <br><br>
+                <label>Task Type  </label>
+                <div class="dropdown" id="typedropdown">
+                    <button class="dropbtn" id="typebutton">Select Type</button>
+                    <div class="dropdown-content" id="typecontent">
+                      <a class="typedropdownoption" id="assignment">Assignment</a>
+                      <a class="typedropdownoption" id="test">Test</a>
+                      <a class="typedropdownoption" id="quiz">Quiz</a>
+                      <a class="typedropdownoption" id="exam">Exam</a>
+                      <a class="typedropdownoption" id="homework">Homework</a>
+                      <a class="typedropdownoption" id="practice">Practice</a>
+                      <a class="typedropdownoption" id="personal">Personal</a>
+                      <a class="typedropdownoption" id="typeother">Other</a>
+                    </div>
+                </div>
+                <br><br>
+                <label>Status  </label>
+                <div class="dropdown" id="statusdropdown">
+                    <button class="dropbtn" id="statusbutton">Select Status</button>
+                    <div class="dropdown-content" id="statuscontent">
+                      <a class="statusdropdownoption" id="notstarted">Not Started</a>
+                      <a class="statusdropdownoption" id="inprogress">In Progress</a>
+                      <a class="statusdropdownoption" id="finished">Finished</a>
+                    </div>
+                </div>
+                <br><br>
+                <button class="genericbutton" id="createtaskbutton">Create</button>
+            </div>
+        </div>
+        <div class="modal" id="edittaskmodal">
+            <div class="modalcontent" id="edittaskmodalcontent">
+                <span class="close" id="editclosemodal">&times;</span>
+                <label>Task Description  </label>
+                <input class="textinput" id="edittaskname">
+                <br><br>
+                <label>Due Date  </label>
+                <input class="dateinput" id="editduedate" type="date">
+                <br><br>
+                <label>Task Type  </label>
+                <div class="dropdown" id="edittypedropdown">
+                    <button class="dropbtn" id="edittypebutton">Select Type</button>
+                    <div class="dropdown-content" id="edittypecontent">
+                      <a class="edittypedropdownoption" id="editassignment">Assignment</a>
+                      <a class="edittypedropdownoption" id="edittest">Test</a>
+                      <a class="edittypedropdownoption" id="editquiz">Quiz</a>
+                      <a class="edittypedropdownoption" id="editexam">Exam</a>
+                      <a class="edittypedropdownoption" id="edithomework">Homework</a>
+                      <a class="edittypedropdownoption" id="editpractice">Practice</a>
+                      <a class="edittypedropdownoption" id="editpersonal">Personal</a>
+                      <a class="edittypedropdownoption" id="edittypeother">Other</a>
+                    </div>
+                </div>
+                <br><br>
+                <label>Status  </label>
+                <div class="dropdown" id="editstatusdropdown">
+                    <button class="dropbtn" id="editstatusbutton">Select Status</button>
+                    <div class="dropdown-content" id="editstatuscontent">
+                      <a class="editstatusdropdownoption" id="editnotstarted">Not Started</a>
+                      <a class="editstatusdropdownoption" id="editinprogress">In Progress</a>
+                      <a class="editstatusdropdownoption" id="editfinished">Finished</a>
+                    </div>
+                </div>
+                <br><br>
+                <button class="genericbutton" id="addphases">Add a Phase</button>
+                <br><br>
+                <button class="genericbutton" id="updatetaskbutton">Update</button>
+            </div>
+        </div>
+        <script>require('./syllabusrenderer')</script>
+    </body>
+</html>

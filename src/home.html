@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="home.css" />
+    </head>
+    <body>
+        <h1 id="headertext">Welcome Back to Your Library!</h1>
+        <h3 id="productive">Let's be productive today</h3>
+        <div id="first">
+            <h2>Menu</h2>
+            <a class="menulinks">Today</a>
+            <br><br>
+            <a class="menulinks" href="syllabus.html">Syllabus</a>
+            <br><br>
+            <a class="menulinks">Upcoming Tasks</a>
+            <br><br>
+            <a class="menulinks">Calendar</a>
+        </div>
+        <div id="second">
+            <h2>Current Progress</h2>
+        </div>
+        <div id="third">
+            <h2>Settings</h2>
+            <!-- <select id="colorsetting">
+                <option id="violetcolor" value="default">Violet</option>
+                <option id="bluecolor" value="blue">Blue</option>
+                <option id="pinkcolor" value="pink">Pink</option>
+                <option id="peachcolor" value="peach">Peach</option>
+                <option id="greencolor" value="green">Green</option>
+                <option id="graycolor" value="gray">Gray</option>
+                <option id="darkmodecolor" value="darkmode">Dark Mode</option>
+            </select> -->
+            <div id="dropdown">
+                <button id="dropbtn">Color Settings</button>
+                <div id="dropdown-content">
+                  <a class="color" id="default">Violet</a>
+                  <a class="color" id="blue">Blue</a>
+                  <a class="color" id="pink">Pink</a>
+                  <a class="color" id="peach">Peach</a>
+                  <a class="color" id="green">Green</a>
+                  <a class="color" id="gray">Gray</a>
+                  <a class="color" id="darkmode">Dark Mode</a>
+                </div>
+            </div>
+        </div>
+        <script>require('./renderer')</script>
+    </body>
+</html>
