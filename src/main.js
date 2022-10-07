@@ -12,5 +12,5 @@ app.on('ready', _ => {
     mainWindow.on('closed', _ => {
         mainWindow = null
     })
-    //mainWindow.setMenu(null);
+    mainWindow.setMenu(null);
 })
