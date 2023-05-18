@@ -1,1 +1,1 @@
-<colorsetting>default
+<colorsetting>gray
