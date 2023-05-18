@@ -1,5 +1,5 @@
-var total = 100;
 var currentVals = [];
+var total = 100;
 
 const electron = require('electron');
 var remote = require('electron').remote;
@@ -7,12 +7,15 @@ const url = require('url');
 var fs = require('fs');
 const path = require('path');
 
-// document.getElementById("colorsetting").addEventListener("change", SetColor);
-// document.getElementById("test").addEventListener("click", Test);
-
-// document.getElementById("default").addEventListener("click", SetColor)
-// document.getElementById("blue").addEventListener("click", SetColor)
-// document.getElementById("pink").addEventListener("click", SetColor)
+// Define the color dictionary, mapping each color option to its 5 color shades
+var colorDict = {};
+colorDict["default"] = ['#ddcfe8', '#bc9bd6', '#7f599d', '#583970', '#362147'];
+colorDict["blue"] = ['#bbd1ee', '#92afd4', '#6a84a5', '#43638f', '#284266'];
+colorDict["pink"] = ['#ffe6fc', '#ebc5e6', '#d09bc9', '#af75a7', '#82487b'];
+colorDict["peach"] = ['#ffdad5', '#f3beb7', '#df9f96', '#be766c', '#8c463c'];
+colorDict["green"] = ['#b3ceb3', '#9cc49c', '#7daf7d', '#5e935e', '#396239'];
+colorDict["gray"] = ['#d1d1d1', '#acacac', '#888888', '#5a5a5a', '#3e3e3e'];
+colorDict["darkmode"] = ['#3e3e3e', '#5a5a5a', '#888888', '#acacac', '#d1d1d1'];
 
 const colors = document.querySelectorAll('.color');
 colors.forEach(color => {
@@ -40,53 +43,12 @@ window.onload = function() {
     });
 }
 
-// function SetColor() {
-//     var dropdown = document.getElementById("colorsetting");
-//     var color = dropdown.value;
-//     ColorSettings(color);
-
-//     UpdateValue('<colorsetting>', color);
-// }
-
 function SetColor() {
     var color = this.id;
     ColorSettings(color);
-    UpdateValue('<colorsetting>', color);
+    UpdateValue('<colorsetting>', color, 'info.txt');
 }
 
-function UpdateValue(tag, newVal) {
-    var filepath = path.join(__dirname, 'info.txt');
-
-    fs.readFile(filepath, 'utf-8', (err, data) => {
-        if(err){
-            alert("An error ocurred reading the file :" + err.message);
-            return;
-        }
-        console.log(data);
-        var tagIndex = data.indexOf(tag);
-        console.log(tagIndex);
-        var tempStr = data.slice(tagIndex);
-        console.log(tempStr);
-        tempStr = tempStr.slice(tempStr.indexOf('>') + 1);
-        console.log(tempStr);
-        var nextTagIndex = tempStr.indexOf('<');
-        var newData = '';
-        if (nextTagIndex == -1){
-            newData = data.slice(0,tagIndex) + tag + newVal;
-            console.log(newData);
-        }
-        else {
-            newData = data.slice(0,tagIndex) + tag + newVal + data.slice(nextTagIndex);
-        }
-
-        fs.writeFile(filepath, newData, (err) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-        });
-    });
-}
 
 function ParseFileContent(data) {
     var tempdata = data;
@@ -187,56 +149,9 @@ function UpdateProgress(bar, message, i) {
 
 function ColorSettings(color) {
     let root = document.documentElement;
-    if (color == "default") {
-        root.style.setProperty('--lightest', '#ddcfe8');
-        root.style.setProperty('--light', '#bc9bd6');
-        root.style.setProperty('--middle', '#7f599d');
-        root.style.setProperty('--dark', '#583970');
-        root.style.setProperty('--darkest', '#362147');
-    }
-    else if (color == "blue") {
-        root.style.setProperty('--lightest', '#bbd1ee');
-        root.style.setProperty('--light', '#92afd4');
-        root.style.setProperty('--middle', '#6a84a5');
-        root.style.setProperty('--dark', '#43638f');
-        root.style.setProperty('--darkest', '#284266');
-    }
-    else if (color == "pink") {
-        root.style.setProperty('--lightest', '#ffe6fc');
-        root.style.setProperty('--light', '#ebc5e6');
-        root.style.setProperty('--middle', '#d09bc9');
-        root.style.setProperty('--dark', '#af75a7');
-        root.style.setProperty('--darkest', '#82487b');
-    }
-    else if (color == "peach") {
-        root.style.setProperty('--lightest', '#ffdad5');
-        root.style.setProperty('--light', '#f3beb7');
-        root.style.setProperty('--middle', '#df9f96');
-        root.style.setProperty('--dark', '#be766c');
-        root.style.setProperty('--darkest', '#8c463c');
-    }
-    else if (color == "green") {
-        root.style.setProperty('--lightest', '#b3ceb3');
-        root.style.setProperty('--light', '#9cc49c');
-        root.style.setProperty('--middle', '#7daf7d');
-        root.style.setProperty('--dark', '#5e935e');
-        root.style.setProperty('--darkest', '#396239');
-    }
-    else if (color == "gray") {
-        root.style.setProperty('--lightest', '#d1d1d1');
-        root.style.setProperty('--light', '#acacac');
-        root.style.setProperty('--middle', '#888888');
-        root.style.setProperty('--dark', '#5a5a5a');
-        root.style.setProperty('--darkest', '#3e3e3e');
-    }
-    else if (color == "darkmode") {
-        root.style.setProperty('--lightest', '#3e3e3e');
-        root.style.setProperty('--light', '#5a5a5a');
-        root.style.setProperty('--middle', '#888888');
-        root.style.setProperty('--dark', '#acacac');
-        root.style.setProperty('--darkest', '#d1d1d1');
-    }
-    else {
-        console.log("Invalid color");
-    }
+    root.style.setProperty('--lightest', colorDict[color][0]);
+    root.style.setProperty('--light', colorDict[color][1]);
+    root.style.setProperty('--middle', colorDict[color][2]);
+    root.style.setProperty('--dark', colorDict[color][3]);
+    root.style.setProperty('--darkest', colorDict[color][4]);
 }
