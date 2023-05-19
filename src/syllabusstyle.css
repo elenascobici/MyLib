@@ -1,11 +1,3 @@
-:root {
-    --lightest: #ffffff;
-    --light: #ffffff;    
-    --middle: #ffffff; 
-    --dark: #ffffff;
-    --darkest: #ffffff;
-}
-
 @font-face {
     font-family: ethereal;
     src: url(Ethereal-Thin.otf);
@@ -44,6 +36,20 @@ h1 {
     font-size: 20px;
     color: var(--darkest);
     border-color: var(--darkest);
+}
+
+div::-webkit-scrollbar {
+    width: 12px;               
+}
+
+div::-webkit-scrollbar-track {
+    background: var(--middle);       
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: var(--dark);    
+    border-radius: 20px;    
+    border: 3px solid var(--middle);   
 }
 
 table {
@@ -130,6 +136,7 @@ body::-webkit-scrollbar-thumb {
     height: 100%; 
     overflow: auto; 
     background-color: rgba(0,0,0,0.4); 
+    overflow-y: scroll;
 }
 
 .modalcontent {

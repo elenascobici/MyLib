@@ -1,18 +1,13 @@
+/*
+    Render the syllabus page, load the current syllabus table from 
+    syllabustable.txt and update the file with any changes from the user.
+*/
+
 const electron = require('electron');
 var remote = require('electron').remote;
 const url = require('url');
 var fs = require('fs');
 const path = require('path');
-
-// Define the color dictionary, mapping each color option to its 5 color shades
-var colorDict = {};
-colorDict["default"] = ['#ddcfe8', '#bc9bd6', '#7f599d', '#583970', '#362147'];
-colorDict["blue"] = ['#bbd1ee', '#92afd4', '#6a84a5', '#43638f', '#284266'];
-colorDict["pink"] = ['#ffe6fc', '#ebc5e6', '#d09bc9', '#af75a7', '#82487b'];
-colorDict["peach"] = ['#ffdad5', '#f3beb7', '#df9f96', '#be766c', '#8c463c'];
-colorDict["green"] = ['#b3ceb3', '#9cc49c', '#7daf7d', '#5e935e', '#396239'];
-colorDict["gray"] = ['#d1d1d1', '#acacac', '#888888', '#5a5a5a', '#3e3e3e'];
-colorDict["darkmode"] = ['#3e3e3e', '#5a5a5a', '#888888', '#acacac', '#d1d1d1'];
 
 const types = document.querySelectorAll('.typedropdownoption');
 types.forEach(type => {
@@ -77,14 +72,10 @@ document.getElementById('updatetaskbutton').addEventListener('click', function U
     table.rows[currRow].cells[1].innerHTML = document.getElementById('editduedate').value;
     table.rows[currRow].cells[2].innerHTML = document.getElementById('edittypebutton').innerHTML;
     table.rows[currRow].cells[3].innerHTML = document.getElementById('editstatusbutton').innerHTML;
+    SaveTable();
 })
 
-function CreateTask() {
-    var taskName = document.getElementById("taskname").value;
-    var dueDate = document.getElementById("duedate").value;
-    var taskType = document.getElementById("typebutton").innerHTML;
-    var taskStatus = document.getElementById("statusbutton").innerHTML;
-
+function CreateTableRow(taskName, dueDate, taskType, taskStatus) {
     var table = document.getElementById("syllabustable");
     var newRow = table.insertRow(-1);
     var taskCell = newRow.insertCell(0);
@@ -149,32 +140,58 @@ function CreateTask() {
             }
         })
     })
+}
+
+function CreateTask() {
+    var taskName = document.getElementById("taskname").value;
+    var dueDate = document.getElementById("duedate").value;
+    var taskType = document.getElementById("typebutton").innerHTML;
+    var taskStatus = document.getElementById("statusbutton").innerHTML;
+
+    CreateTableRow(taskName, dueDate, taskType, taskStatus);
 
     SaveTable();
 }
 
 function SaveTable() {
-    var tableData = "<table>";
+    var tableData = "";
     var syllTable = document.getElementById("syllabustable");
-    for (var i = 0, row; row = syllTable.rows[i]; i++) {
-        for (var j = 0, col; col = row.cells[j]; j++) {
-            tableData += col + ",";
+    for (var i = 1; i < syllTable.rows.length; i++) {
+        var row = syllTable.rows[i];
+        for (var j = 0; j < row.cells.length - 1; j++) {
+            tableData += row.cells[j].innerHTML + ",";
         }  
     }
     UpdateValue('<table>', tableData, 'syllabustable.txt');
 }
 
-window.onload = function() {
-    console.log('running');
-    var filepath = path.join(__dirname, 'info.txt');
+function LoadTable(tableData) {
+    var tempTableData = tableData;
+    var numColumns = document.getElementById("syllabustable").rows[0].cells.length - 1; // subtract 1 to not include x button
+    while (tempTableData.length > 0) {
+        var tdts = []; // task, date, type, status
+        for (i = 0; i < numColumns; i++) {
+            var nextComma = tempTableData.indexOf(',');
+            tdts.push(tempTableData.substring(0, nextComma));
+            tempTableData = tempTableData.substring(nextComma + 1);
+        }
+        CreateTableRow(tdts[0], tdts[1], tdts[2], tdts[3]);
+    }
+}
 
-    fs.readFile(filepath, 'utf-8', (err, data) => {
+window.onload = function() {
+    console.log('syllabus running');
+    var filepaths = [path.join(__dirname, 'info.txt'), path.join(__dirname, 'syllabustable.txt')];
+
+    filepaths.forEach(path => fs.readFile(path, 'utf-8', (err, data) => 
+    {
         if(err){
             alert("An error ocurred reading the file :" + err.message);
             return;
         }
         ParseFileContent(data);
-    });
+    }));
+    
 
     var modal = document.getElementById("taskmodal");
     var editmodal = document.getElementById("edittaskmodal");
@@ -219,19 +236,12 @@ function ParseFileContent(data) {
             tagValue = tempdata.slice(0, nextTag);
             tempdata = tempdata.slice(nextTag);
         }
-        // Set proper variable value
+        // Process the value read
         if (tagName == "colorsetting") {
             ColorSettings(tagValue);
         }
+        else if (tagName == "table") {
+            LoadTable(tagValue);
+        }
     }
-}
-
-// Try to figure out how to import this from renderer.js instead of copying
-function ColorSettings(color) {
-    let root = document.documentElement;
-    root.style.setProperty('--lightest', colorDict[color][0]);
-    root.style.setProperty('--light', colorDict[color][1]);
-    root.style.setProperty('--middle', colorDict[color][2]);
-    root.style.setProperty('--dark', colorDict[color][3]);
-    root.style.setProperty('--darkest', colorDict[color][4]);
 }
