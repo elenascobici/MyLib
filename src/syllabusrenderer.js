@@ -1,6 +1,8 @@
 /*
-    Render the syllabus page, load the current syllabus table from 
+    Summary: Render the syllabus page, load the current syllabus table from 
     syllabustable.txt and update the file with any changes from the user.
+
+    Author: Elena Scobici (elena@scobici.com)
 */
 
 const electron = require('electron');
@@ -9,26 +11,31 @@ const url = require('url');
 var fs = require('fs');
 const path = require('path');
 
+// Create event listener for type dropdown being used
 const types = document.querySelectorAll('.typedropdownoption');
 types.forEach(type => {
     type.addEventListener('click', SetTypeDropDown);
 });
 
+// Create event listener for status dropdown being used
 const statuses = document.querySelectorAll('.statusdropdownoption');
 statuses.forEach(status => {
     status.addEventListener('click', SetStatusDropDown);
 });
 
+// Create event listener for type dropdown value being edited
 const edittypes = document.querySelectorAll('.edittypedropdownoption');
 edittypes.forEach(type => {
     type.addEventListener('click', SetEditTypeDropDown);
 });
 
+// Create event listener for status dropdown value being edited
 const editstatuses = document.querySelectorAll('.editstatusdropdownoption');
 editstatuses.forEach(status => {
     status.addEventListener('click', SetEditStatusDropDown);
 });
 
+// Add event listeners for creating tasks and phases
 document.getElementById("createtaskbutton").addEventListener('click', CreateTask);
 document.getElementById('addphases').addEventListener('click', AddPhases);
 
@@ -52,6 +59,7 @@ function SetEditStatusDropDown() {
     document.getElementById("editstatusbutton").innerHTML = selected;
 }
 
+// Create a new phase for this task
 function AddPhases() {
     var modal = document.getElementById('edittaskmodalcontent');
     var newPhase = document.createElement('input');
@@ -64,17 +72,21 @@ function AddPhases() {
     modal.appendChild(newPhase);
 }
 
-var currRow = 1;
+var currRow = 1; // global variable representing the current row of the table
 
+// Update this task with the newly selected values
 document.getElementById('updatetaskbutton').addEventListener('click', function UpdateTask() {
     var table = document.getElementById("syllabustable");
     table.rows[currRow].cells[0].innerHTML = document.getElementById('edittaskname').value;
     table.rows[currRow].cells[1].innerHTML = document.getElementById('editduedate').value;
     table.rows[currRow].cells[2].innerHTML = document.getElementById('edittypebutton').innerHTML;
     table.rows[currRow].cells[3].innerHTML = document.getElementById('editstatusbutton').innerHTML;
-    SaveTable();
+    SaveTable(); // update syllabustable.txt with these new values
 })
 
+// Helper function for appending a row to the syllabus table with the given
+// name, date, type and status, and also adding a delete button as well as all
+// needed event listeners.
 function CreateTableRow(taskName, dueDate, taskType, taskStatus) {
     var table = document.getElementById("syllabustable");
     var newRow = table.insertRow(-1);
@@ -109,6 +121,7 @@ function CreateTableRow(taskName, dueDate, taskType, taskStatus) {
     deleteCell.addEventListener('click', function deleteCellClickHandler() {
         var rowIndex = deleteCell.parentElement.rowIndex;
         table.deleteRow(rowIndex);
+        SaveTable(); // update table data in syllabustable.txt after the row has been deleted.
     })
 
     var allVis = document.querySelectorAll(".visible");
@@ -142,6 +155,7 @@ function CreateTableRow(taskName, dueDate, taskType, taskStatus) {
     })
 }
 
+// Create a new task, add it to the table and save the values in syllabustable.txt.
 function CreateTask() {
     var taskName = document.getElementById("taskname").value;
     var dueDate = document.getElementById("duedate").value;
@@ -153,6 +167,8 @@ function CreateTask() {
     SaveTable();
 }
 
+// Update the data in syllabustable.txt to reflect the current state of the
+// syllabus table.
 function SaveTable() {
     var tableData = "";
     var syllTable = document.getElementById("syllabustable");
@@ -165,6 +181,7 @@ function SaveTable() {
     UpdateValue('<table>', tableData, 'syllabustable.txt');
 }
 
+// Load the table from the data in syllabustable.txt.
 function LoadTable(tableData) {
     var tempTableData = tableData;
     var numColumns = document.getElementById("syllabustable").rows[0].cells.length - 1; // subtract 1 to not include x button
@@ -179,8 +196,8 @@ function LoadTable(tableData) {
     }
 }
 
+// When the syllabus window loads, add event listeners to all buttons.
 window.onload = function() {
-    console.log('syllabus running');
     var filepaths = [path.join(__dirname, 'info.txt'), path.join(__dirname, 'syllabustable.txt')];
 
     filepaths.forEach(path => fs.readFile(path, 'utf-8', (err, data) => 
@@ -218,6 +235,8 @@ window.onload = function() {
     }
 }
 
+// Helper function for parsing the given data, reading tag values
+// and calling other helper functions accordingly.
 function ParseFileContent(data) {
     var tempdata = data;
     while (tempdata.length > 0) {

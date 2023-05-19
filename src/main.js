@@ -1,3 +1,9 @@
+/*
+    Summary: Create the application window.
+    
+    Author: Elena Scobici (elena@scobici.com)
+*/
+
 const electron = require("electron");
 const {ipcMain, dialog, session, app, BrowserWindow, Menu} = require('electron');
 var fs = require('fs');
@@ -12,5 +18,5 @@ app.on('ready', _ => {
     mainWindow.on('closed', _ => {
         mainWindow = null
     })
-    mainWindow.setMenu(null);
+    mainWindow.setMenu(null); // this hides the developer tool menu
 })
