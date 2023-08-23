@@ -57,31 +57,11 @@ table {
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
-}
-
-.taskcolumn {
-    padding-left: 120px;
-    padding-right: 120px;
-}
-
-.datecolumn {
-    padding-left: 70px;
-    padding-right: 70px;
-}
-
-.typecolumn {
-    padding-left: 70px;
-    padding-right: 70px;
-}
-
-.statuscolumn {
-    padding-left: 50px;
-    padding-right: 50px;
+    width: 100%;
 }
 
 .deletecolumn {
-    visibility:'hidden';
-    border-style:none;
+    border-style: none;
 }
 
 .deletecell {
@@ -189,6 +169,11 @@ body::-webkit-scrollbar-thumb {
 
 .genericbutton:focus {
     outline:none;
+}
+
+.deletephasebtn {
+    margin-left:10px;
+    margin-right:10px;
 }
 
 .dropbtn:focus {

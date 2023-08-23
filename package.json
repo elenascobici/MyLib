@@ -10,6 +10,8 @@
   "author": "Elena Scobici",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.5.0",
     "electron-prebuilt": "^1.4.13"
-  }
+  },
+  "type": "module"
 }
