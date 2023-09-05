@@ -3,7 +3,10 @@
 */
 const GenericMethods = require('./generic-methods');
 
-class Task {
+export const rowToTask: Map<HTMLTableRowElement, Task> = new
+    Map<HTMLTableRowElement, Task>();
+
+export class Task {
     name: string;
     type: string;
     class: string;
@@ -22,9 +25,11 @@ class Task {
         this.planned = planned;
         this.status = status;
         this.phases = phases;
-        this.row = (document.getElementById('syllabustable')! as 
+        this.row = (document.getElementById('syllabus-table')! as 
             HTMLTableElement).insertRow(-1);
+        this.row.classList.add('syllabus-table-row');
         this.PopulateRow();
+        rowToTask.set(this.row, this);
     }
 
     // Add all cells to the row corresponding to this task.
@@ -69,6 +74,22 @@ class Task {
             .reduce((weightAcc, newWeight) => weightAcc + newWeight, 0);
         return String(weights * 100) + '%';
     }
+
+    // Edit the task with the new values.
+    EditTask(name: string, type: string, taskClass: string, due: Date, 
+            planned: Date, status: string, phases: Phase[]) {
+        this.name = name;
+        this.type = type;
+        this.class = taskClass;
+        this.due = due;
+        this.planned = planned;
+        this.status = status;
+        this.phases = phases;
+        while (this.row!.cells.length > 0) {
+            this.row!.deleteCell(-1);
+        }
+        this.PopulateRow();
+    }
 }
 
 class Phase {
@@ -82,4 +103,4 @@ class Phase {
     }
 }
 
-export = Task;
+// export = Task;
