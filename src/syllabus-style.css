@@ -213,12 +213,15 @@ body::-webkit-scrollbar-thumb {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: var(--dark);}
 
+#taskname {
+    width: 300px;
+}
+
 .textinput {
     font-family:ethereal;
     color:var(--darkest);
     background-color: var(--lightest);
     height:25px;
-    width: 300px;
     font-size:16px;
 }
 
@@ -229,4 +232,12 @@ body::-webkit-scrollbar-thumb {
 .dateinput {
     background-color: var(--lightest);
     color: var(--darkest);
+}
+
+label {
+    width: 30%;
+}
+
+#class-content > input {
+    width: 100%;
 }
